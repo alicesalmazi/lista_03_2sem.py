@@ -13,15 +13,19 @@ def assentosSala():
     R = numCadeiras[0]
     C = numCadeiras[1]
     matriz = []
-
+    
     for i in range(numCadeiras[0]):
-        matriz.append([random.randint(0,1) for j in range(C)])   
+        matriz.append([random.randint(0,1) for j in range(C)])
+
+    print([f"{linha}\n" for linha in matriz])
 
     while True:
         reserva = reservarLugar(R, C)
         if reserva == None:
             break
-        elif matriz[R][C] == 0:
+        elif matriz[reserva[0]][reserva[1]] == 0:
+            matriz[reserva[0]].pop(reserva[1])
+            matriz[reserva[0]].insert(reserva[1], 1)
             break
         else:
             print("Cadeira já está ocupada!")
@@ -30,7 +34,9 @@ def assentosSala():
         liberar = liberarLugar(R, C)
         if liberar == None:
             break
-        elif matriz[R][C] == 0:
+        elif matriz[reserva[0]][reserva[1]] == 1:
+            matriz[reserva[0]].pop(reserva[1])
+            matriz[reserva[0]].insert(reserva[1], 0)
             break
         else:
             print("Cadeira não está ocupada!")
@@ -86,6 +92,7 @@ def reservarLugar(R, C):
                         print("Essa coluna não existe!")
             except ValueError:
                 print("Digite um valor válido!")
+    return [reservarNum1, reservarNum2]
 
 def liberarLugar(R, C):
     listaAux = []
@@ -115,6 +122,7 @@ def liberarLugar(R, C):
                         print("Essa coluna não existe!")
             except ValueError:
                 print("Digite um valor válido!")
+    return [liberarNum1, liberarNum2]
 
 def verificarLugar(R, C, matriz):
     while True:
@@ -133,3 +141,5 @@ def verificarLugar(R, C, matriz):
             if all(cadeira == 0 for cadeira in bloco):
                 return True
     return False
+
+print(assentosSala())
